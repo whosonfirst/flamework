@@ -25,7 +25,7 @@
 	$GLOBALS['cfg']['db_main'] = array(
 		'host'	=> 'localhost',
 		'user'	=> 'root',
-		'pass'	=> 'root',
+		'pass'	=> 'READ-FROM-SECRETS',
 		'name'	=> 'flamework',
 		'auto_connect' => 0,
 	);
@@ -38,7 +38,7 @@
 		),
 
 		'user' => 'root',
-		'pass' => 'root',
+		'pass' => 'READ-FROM-SECRETS',
 
 		'name' => array(
 			1 => 'user1',
@@ -64,9 +64,9 @@
 
 	# No, seriously. Change these...
 
-	$GLOBALS['cfg']['crypto_cookie_secret'] = '';
-	$GLOBALS['cfg']['crypto_password_secret'] = '';
-	$GLOBALS['cfg']['crypto_crumb_secret'] = '';
+	$GLOBALS['cfg']['crypto_cookie_secret'] = 'READ-FROM-SECRETS';
+	$GLOBALS['cfg']['crypto_password_secret'] = 'READ-FROM-SECRETS';
+	$GLOBALS['cfg']['crypto_crumb_secret'] = 'READ-FROM-SECRETS';
 
 
 	#
@@ -213,3 +213,8 @@
 		#'cache_memcache',
 	);
 
+	# Always load (if feature flag is enabled)
+
+	$GLOBALS['cfg']['autoload_libs_if_enabled'] = array(
+		# 'some_feature_flag' => array('lib1', 'lib2')
+	);

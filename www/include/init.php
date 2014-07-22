@@ -75,14 +75,32 @@
 		return FLAMEWORK_INCLUDE_DIR . $lib;		
 	}
 
+        # load config file(s)
 
-	#
-	# load config
-	#
+        $host = gethostname();
+        $host = explode(".", $host);
+        $host = $host[0];
 
-	if (!isset($GLOBALS['cfg']['flamework_skip_init_config'])){
-		include(FLAMEWORK_INCLUDE_DIR."config.php");
-	}
+        $config_files = array();
+
+        $global_config = FLAMEWORK_INCLUDE_DIR . "config.php";
+        $global_secrets = FLAMEWORK_INCLUDE_DIR . "secrets.php";
+
+        $local_config = FLAMEWORK_INCLUDE_DIR . "config_local_{$host}.php";
+        $local_secrets = FLAMEWORK_INCLUDE_DIR . "secrets_local_{$host}.php";
+
+        $config_files[] = $global_config;
+
+        foreach (array($global_secrets, $local_config, $local_secrets) as $path){
+
+                if (file_exists($path)){
+                        $config_files[] = $path;
+                }
+        }
+
+        foreach ($config_files as $path){
+                include($path);
+        }
 
 	# First, ensure that 'abs_root_url' is both assigned and properly
 	# set up to run out of user's public_html directory (if need be).
@@ -106,6 +124,7 @@
 		$server_url = "{$scheme}://{$_SERVER['SERVER_NAME']}";
 	}
 
+	if (0){
 	$cwd = '';
 
 	if ($parent_dirname = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/')){
@@ -126,9 +145,10 @@
 	if ($cwd){
 		$GLOBALS['cfg']['abs_root_url'] .= $cwd . "/";
 	}
+	}
 
 	$GLOBALS['cfg']['auth_cookie_domain'] = parse_url($GLOBALS['cfg']['abs_root_url'], 1);
-
+	
 	#
 	# Poor man's database configs:
 	# See notes in config.php
@@ -230,6 +250,21 @@
 		}
 	}
 
+	if (isset($GLOBALS['cfg']['autoload_libs_if_enabled']) && is_array($GLOBALS['cfg']['autoload_libs_if_enabled'])){
+		foreach ($GLOBALS['cfg']['autoload_libs_if_enabled'] as $feature => $libs){
+
+			if (features_is_enabled($feature)){
+
+				if (! is_array($libs)){
+					$libs = array($libs);
+				}
+
+				foreach($libs as $lib){
+					loadlib($lib);
+				}
+			}
+		}
+	}
 
 	if (($GLOBALS['cfg']['site_disabled']) && (! $this_is_shell)){
 
@@ -294,6 +329,23 @@
 
 	if ($this_is_webpage){
 		login_check_login();
+
+	        # API site key/token stuff
+
+		if (features_is_enabled("api")){
+
+                        loadlib("api");
+
+		        if (features_is_enabled(array("api_site_keys", "api_site_tokens"))){
+
+				loadlib("api_keys");
+				loadlib("api_oauth2_access_tokens");
+
+				$token = api_oauth2_access_tokens_fetch_site_token($GLOBALS['cfg']['user']);
+				$GLOBALS['smarty']->assign_by_ref("site_token", $token['access_token']);
+			}
+		}
+
 	}
 
 	if (StrToLower($_SERVER['HTTP_X_MOZ']) == 'prefetch'){
