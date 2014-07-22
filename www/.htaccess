@@ -49,9 +49,9 @@ RewriteEngine on
 
 # Login stuff
 
-RewriteRule  ^signup$			signup.php		[L]
-RewriteRule  ^signin$			signin.php		[L]
-RewriteRule  ^signout$			signout.php		[L]
+RewriteRule  ^signup$			signup.php		[L,QSA]
+RewriteRule  ^signin$			signin.php		[L,QSA]
+RewriteRule  ^signout$			signout.php		[L,QSA]
 RewriteRule  ^checkcookie$		checkcookie.php	[L]
 
 # Password retrieval stuff
