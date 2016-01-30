@@ -173,6 +173,8 @@
 	# Load these libraries on every page
 
 	$GLOBALS['cfg']['autoload_libs'] = array(
+		'users',
+		'cache',
 		#'cache_memcache',
 	);
 
