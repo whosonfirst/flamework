@@ -14,11 +14,12 @@
 		}
 
 		if (! $redir){
-			# $redir = ltrim($_SERVER['REQUEST_URI'], "/");
 			$redir = $_SERVER['REQUEST_URI'];
 		}
 
-		header("location: {$GLOBALS['cfg']['abs_root_url']}signin/?redir={$redir}");
+		$enc_redir = urlencode($redir);
+
+		header("location: {$GLOBALS['cfg']['abs_root_url']}signin/?redir={$enc_redir}");
 		exit;
 	}
 
