@@ -187,7 +187,7 @@
 
 	$config_files[] = $global_config;
 
-	foreach (array($global_secrets, $local_config, $local_config, $local_secrets, $dev_config, $dev_secrets) as $path){
+	foreach (array($global_secrets, $local_config, $local_secrets, $dev_config, $dev_secrets) as $path){
 
 		if (file_exists($path)){
 			$config_files[] = $path;
