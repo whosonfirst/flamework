@@ -187,7 +187,9 @@
 
 	$config_files[] = $global_config;
 
-	foreach (array($global_secrets, $local_config, $local_secrets, $dev_config, $dev_secrets) as $path){
+	$to_check = array($global_secrets, $local_config, $local_secrets, $dev_config, $dev_secrets);
+
+	foreach ($to_check as $path){
 
 		if (file_exists($path)){
 			$config_files[] = $path;
@@ -195,6 +197,17 @@
 	}
 
 	foreach ($config_files as $path){
+
+		# See this - prod does not make exceptions. If you're in prod then
+		# just make it work, yeah? (20160405/thisisaaronland)
+
+		if ($GLOBALS['cfg']['environment'] == 'prod'){
+
+			if (in_array($path, array($dev_config, $dev_secrets))){
+				continue;
+			}
+		}
+
 		# echo "load {$path} <br />";
 
 		$start = microtime_ms();
@@ -204,7 +217,7 @@
 		$time = $end - $start;
 
 		$GLOBALS['timings']['config_count'] += 1;
-		$GLOBALS['timings']['config_time'] += $time;		
+		$GLOBALS['timings']['config_time'] += $time;
 	}
 
 	# Fucking search engines...
