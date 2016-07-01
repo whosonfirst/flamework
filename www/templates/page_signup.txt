@@ -1,6 +1,7 @@
 {assign var='page_title' value='Sign up for a new account' nav_tab='signup'}
 {include file='inc_head.txt'}
 
+<div class="container">
 <div class="col-md-8 col-md-offset-2 blah-blah-blah">
 
 	{if $error_missing}		<p class="alert alert-error">Please fill out all the fields</p>{/if}
@@ -46,6 +47,7 @@
 			</small></p>
 </div>
 
+</div>
 </div>
 
 <script type="text/javascript">
