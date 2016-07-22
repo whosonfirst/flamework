@@ -1,5 +1,7 @@
 <?php
 
+# PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Smarty has a deprecated constructor in /home/ubuntu/flamework/www/include/smarty_2.6.28/Smarty.class.php on line 64
+
 /**
  * Project:     Smarty: the PHP compiling template engine
  * File:        Smarty.class.php
