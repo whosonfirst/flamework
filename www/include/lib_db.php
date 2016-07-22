@@ -1,7 +1,7 @@
 <?php
 
 	$GLOBALS['db_conns'] = array();
-
+	
 	$GLOBALS['timings']['db_conns_count']	= 0;
 	$GLOBALS['timings']['db_conns_time']	= 0;
 	$GLOBALS['timings']['db_queries_count']	= 0;
@@ -97,7 +97,7 @@
 
 		$start = microtime_ms();
 
-		$GLOBALS['db_conns'][$cluster_key] = @mysqli_real_connect(@mysqli_init(), $host, $user, $pass, 1);
+		$GLOBALS['db_conns'][$cluster_key] = @mysqli_connect($host, $user, $pass, $name);
 
 		if ($GLOBALS['db_conns'][$cluster_key]){
 
@@ -106,7 +106,6 @@
 		}
 
 		$end = microtime_ms();
-
 
 		#
 		# log
@@ -145,7 +144,7 @@
 		$use_sql = _db_comment_query($sql, $trace);
 
 		$start = microtime_ms();
-		$result = @mysqli_query($use_sql, $GLOBALS['db_conns'][$cluster_key]);
+		$result = @mysqli_query($GLOBALS['db_conns'][$cluster_key], $use_sql);
 		$end = microtime_ms();
 
 		$GLOBALS['timings']['db_queries_count']++;
@@ -163,7 +162,7 @@
 		if ($GLOBALS['cfg']['db_profiling']){
 			$profile = array();
 			$p_result = @mysqli_query("SHOW PROFILE ALL", $GLOBALS['db_conns'][$cluster_key]);
-			while ($p_row = mysqli_fetch_array($p_result, MYSQL_ASSOC)){
+			while ($p_row = mysqli_fetch_array($p_result, MYSQLI_ASSOC)){
 				$profile[] = $p_row;
 			}
 		}
@@ -174,6 +173,7 @@
 		#
 
 		if (!$result){
+
 			$error_msg	= mysqli_error($GLOBALS['db_conns'][$cluster_key]);
 			$error_code	= mysqli_errno($GLOBALS['db_conns'][$cluster_key]);
 
@@ -355,7 +355,7 @@
 
 		$start = microtime_ms();
 		$count = 0;
-		while ($row = mysqli_fetch_array($ret['result'], MYSQL_ASSOC)){
+		while ($row = mysqli_fetch_array($ret['result'], MYSQLI_ASSOC)){
 			$out['rows'][] = $row;
 			$count++;
 		}
