@@ -24,6 +24,13 @@
 		'auto_connect' => 0,
 	);
 
+	$GLOBALS['cfg']['db_accounts'] = array(
+		'host'	=> 'localhost',
+		'name'	=> 'flamework',		# database name
+		'user'	=> 'root',		# database username
+		'auto_connect' => 0,
+	);
+
 	$GLOBALS['cfg']['db_users'] = array(
 
 		'host' => array(
