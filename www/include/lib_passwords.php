@@ -24,7 +24,7 @@
 
 	#################################################################
 
-	function passwords_encrypt_password($password){
+	function passwords_encrypt_password($password, $more=array()){
 
 		if ($GLOBALS['cfg']['passwords_use_bcrypt']){
 
@@ -32,12 +32,21 @@
 			return $h->HashPassword($password);
 		}
 
+		if ($GLOBALS['cfg']['passwords_use_pbkdf2']){
+
+			$salt = $more['salt'];
+			$iters = $more['iterations'];
+			
+			$hash = hash_pbkdf2("sha256", $password, $salt, $iters, 32);
+			return array('ok' => 1, 'hash' => $hash, 'salt' => $salt, 'iterations' => $iters);
+		}
+		
 		return hash_hmac("sha256", $password, $GLOBALS['cfg']['crypto_password_secret']);
 	}
 
 	#################################################################
 
-	function passwords_validate_password($password, $enc_password){
+	function passwords_validate_password($password, $enc_password, $more=array()){
 
 		if ($GLOBALS['cfg']['passwords_use_bcrypt']){
 
@@ -45,8 +54,13 @@
 			return $h->CheckPassword($password, $enc_password);
 		}
 
-		$test = passwords_encrypt_password($password);
+		if ($GLOBALS['cfg']['passwords_use_pbkdf2']){
 
+			$test = passwords_encrypt_password($password, $more);
+			return $test == $enc_password;			
+		}
+		
+		$test = passwords_encrypt_password($password);
 		return $test == $enc_password;
 	}
 
@@ -81,12 +95,25 @@
 			return $is_ok;
 		}
 
+		if ($GLOBALS['cfg']['passwords_use_pbkdf2']){
 
-		#
+			$more = array('salt' => $user['salt'], $user['iterations']);
+			return passwords_validate_password($password, $user['password'], $more);			
+		}
+
 		# simple case
-		#
 
 		return passwords_validate_password($password, $user['password']);
 	}
 
 	#################################################################
+
+	function passwords_generate_salt(){
+
+		$salt = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);
+		return $salt;
+	}
+	
+	#################################################################
+
+	# the end
