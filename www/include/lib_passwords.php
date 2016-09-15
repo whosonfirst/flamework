@@ -1,4 +1,9 @@
 <?php
+
+	# https://nakedsecurity.sophos.com/2013/11/20/serious-security-how-to-store-your-users-passwords-safely/
+	# https://pages.nist.gov/800-63-3/sp800-63c.html
+	# https://en.wikipedia.org/wiki/PBKDF2
+	
 	#
 	# if we're using bcrypt, ensure we have it installed
 	#
