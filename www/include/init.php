@@ -103,7 +103,7 @@
 			return $lib;
 		}
 
-		return FLAMEWORK_INCLUDE_DIR . $lib;		
+		return FLAMEWORK_INCLUDE_DIR . $lib;
 	}
 
 	#
@@ -175,10 +175,10 @@
 	# Local is by hostname. Dev is local to a specific machine or
 	# instance where you may not know or have a hostname...
 	# (20160404/thisisaaronland)
-	
+
 	$global_config = FLAMEWORK_INCLUDE_DIR . "config.php";
 	$global_secrets = FLAMEWORK_INCLUDE_DIR . "secrets.php";
-	
+
 	$local_config = FLAMEWORK_INCLUDE_DIR . "config_local_{$host}.php";
 	$local_secrets = FLAMEWORK_INCLUDE_DIR . "secrets_local_{$host}.php";
 
@@ -248,6 +248,10 @@
 		$scheme = "https";
 	}
 
+	if ($_SERVER['HTTP_X_FORWARDED_PORT']) {
+		$_SERVER['SERVER_PORT'] = $_SERVER['HTTP_X_FORWARDED_PORT'];
+	}
+
 	if ($_SERVER['SERVER_PORT']) {
 		$server_port = null;
 
@@ -263,7 +267,7 @@
 			$server_url = "{$scheme}://{$_SERVER['SERVER_NAME']}";
 		}
 	}
-	
+
 	if (! $server_url){
 		$server_url = "{$scheme}://{$_SERVER['SERVER_NAME']}";
 	}
@@ -274,7 +278,7 @@
 	# at some point or another. So we choose trailing slashes.
 
 	$GLOBALS['cfg']['abs_root_url'] = rtrim($server_url, '/') . "/";
-	
+
 	# Because sometimes you can't run your Flamework project off of the root path
 	# of a domain and need to do stuff like this in your httpd.conf file
 	#
@@ -295,7 +299,7 @@
 	# in either your httpd.conf or .htaccess file, like this:
 	#
 	# SetEnv FLAMEWORK_SUFFIX "/boundaryissues/ca"
-	# 
+	#
 	# The problem with doing that is if you're just _actually_ running your Flamework project
 	# on / but serving it up on a nested path (and probably a different domain) via something
 	# like nginx then by setting the environment locally then there is no way to introspect the
@@ -304,7 +308,7 @@
 	# $GLOBALS['cfg']['enable_feature_abs_root_suffix'] = 1;
 	# $GLOBALS['cfg']['abs_root_suffix'] = "";
 	# $GLOBALS['cfg']['abs_root_suffix_env'] = 'HTTP_X_PROXY_PATH';
-	# 
+	#
 	# (20160603/thisisaaronland)
 
 	if ($GLOBALS['cfg']['enable_feature_abs_root_suffix']){
@@ -321,7 +325,7 @@
 			$ok = 1;
 
 			foreach (explode("/", $suffix) as $chunk){
-		
+
 				if (chunk == ".."){
 					$ok = 0;
 					break;
@@ -535,13 +539,13 @@
 	# (unless you've disable the 'auto_connect' flag) and
 	# will blow its brains out if there's a problem.
 	#
-	
+
 	$start = microtime_ms();
 
 	db_init();
 
 	$end = microtime_ms();
-	$time = $end - $start; 
+	$time = $end - $start;
 
 	$GLOBALS['timings']['db_init_time'] = $time;
 
