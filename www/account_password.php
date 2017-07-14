@@ -25,7 +25,7 @@
 
 		$ok = 1;
 
-		if (! passwords_validate_password_for_user($old_pass, $GLOBALS['cfg']['user'])){
+		if (! passwords_utils_validate_password_for_user($old_pass, $GLOBALS['cfg']['user'])){
 			$smarty->assign('error_oldpass_mismatch', 1);
 			$ok = 0;
 		}

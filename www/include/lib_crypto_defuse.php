@@ -10,7 +10,7 @@
 	#################################################################
 	
 	function crypto_encrypt($data, $secret){
-
+	
 		try {
 			$key = Key::loadFromAsciiSafeString($secret);
 			return Crypto::encrypt($data, $key);
