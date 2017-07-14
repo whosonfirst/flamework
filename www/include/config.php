@@ -69,7 +69,9 @@
 	# These should be left as-is, unless you have an existing password database not using bcrypt and
 	# you need to do auto-promotion on login.
 
-	$GLOBALS['cfg']['passwords_use_bcrypt'] = true;
+	$GLOBALS['cfg']['passwords_use_module'] = 'bcrypt';
+	
+	$GLOBALS['cfg']['passwords_use_bcrypt'] = true;		# deprecated - please set $GLOBALS['cfg']['passwords_module'] instead
 	$GLOBALS['cfg']['passwords_allow_promotion'] = false;
 
 	# Things you may need to tweak
@@ -195,12 +197,14 @@
 	# MEANT TO BE CHECKED IN EVER. DON'T DO IT. AND DON'T DEFINE THESE
 	# THINGS HERE. REALLY. 
 
+	$GLOBALS['cfg']['crypto_use_module'] = 'defuse';
+	
 	# $GLOBALS['cfg']['crypto_cookie_secret'] = '';
 	# $GLOBALS['cfg']['crypto_password_secret'] = '';
 	# $GLOBALS['cfg']['crypto_crumb_secret'] = '';
 
 	# $GLOBALS['cfg']['db_main']['pass'] = '';
 	# $GLOBALS['cfg']['db_users']['pass'] = '';
-	# $GLOBALS['cfg']['db_poormans_slaves_pass'] = 'READ-FROM-SECRETS';
+	# $GLOBALS['cfg']['db_poormans_slaves_pass'] = '';
 
 	# the end

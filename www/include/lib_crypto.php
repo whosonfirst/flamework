@@ -8,5 +8,25 @@
 	# https://paragonie.com/book/pecl-libsodium/read/09-recipes.md#encrypted-cookies
 	# https://github.com/defuse/php-encryption/blob/master/docs/Tutorial.md
 
-	loadlib("crypto_defuse");
-	# loadlib("crypto_mcrypt");
+	# hey look! running code!!
+	
+	#################################################################
+
+	switch ($GLOBALS["cfg"]["crypto_use_module"]){
+
+		case "defuse":
+			loadlib("crypto_defuse");
+			break;
+		case "libsodium":
+			loadlib("crypto_libsodium");
+			break;
+		case "mcrypt":
+			loadlib("crypto_mcrypt");
+			break;
+		default:
+			die("You must specify a crypto module in cfg.crypto_module");
+	}
+
+	#################################################################
+
+	# the end
