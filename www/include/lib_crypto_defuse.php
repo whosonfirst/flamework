@@ -11,18 +11,33 @@
 	
 	function crypto_encrypt($data, $secret){
 
-		$key = Key::loadFromAsciiSafeString($secret);
-		return Crypto::encrypt($data, $key);
+		try {
+			$key = Key::loadFromAsciiSafeString($secret);
+			return Crypto::encrypt($data, $key);
+		} catch (Exception $e) {
+			return null;
+		}
 	}
 
 	#################################################################
 	
-	function crypto_decrypt($ciphertext, $key){
+	function crypto_decrypt($ciphertext, $secret){
 
-		$key = Key::loadFromAsciiSafeString($secret);
-		
-		Crypto::decrypt($ciphertext, $secret);
+		try {
+			$key = Key::loadFromAsciiSafeString($secret);		
+			return Crypto::decrypt($ciphertext, $key);
+		} catch (Exception $e){
+			return null;
+		}			
 	}
 
+	#################################################################
+
+	function crypto_generate_key(){
+
+		$key = Key::createNewRandomKey();
+		return $key->saveToAsciiSafeString();		    
+	}
+	
 	#################################################################
 	# the end

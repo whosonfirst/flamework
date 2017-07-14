@@ -8,6 +8,5 @@
 	# https://paragonie.com/book/pecl-libsodium/read/09-recipes.md#encrypted-cookies
 	# https://github.com/defuse/php-encryption/blob/master/docs/Tutorial.md
 
-	# loadlib("crypto_defuse");
-	loadlib("crypto_mcrypt");
-	
+	loadlib("crypto_defuse");
+	# loadlib("crypto_mcrypt");
