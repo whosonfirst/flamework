@@ -46,6 +46,8 @@
 		),
 	);
 
+	// See also: remote_addr() in init.php
+	$GLOBALS['cfg']['remote_addr_index'] = 0;
 
 	# hard coding this URL will ensure it works in cron mode too
 
@@ -86,7 +88,7 @@
         $GLOBALS['cfg']['enable_feature_cache_prefixes'] = 1;
         $GLOBALS['cfg']['cache_prefix'] = $GLOBALS['cfg']['environment'];
 
-	# Note: memcache stuff is not enabled by default but is 
+	# Note: memcache stuff is not enabled by default but is
 	# available in the 'extras' directory
 
 	$GLOBALS['cfg']['auth_cookie_domain'] = parse_url($GLOBALS['cfg']['abs_root_url'], 1);
@@ -159,7 +161,7 @@
 	# This will assign $pagination automatically for Smarty but
 	# you probably don't want to do this for anything resembling
 	# a complex application...
-	
+
 	$GLOBALS['cfg']['pagination_assign_smarty_variable'] = 0;
 
 	$GLOBALS['cfg']['pagination_per_page'] = 10;
@@ -194,7 +196,7 @@
 
 	# THINGS YOU SHOULD DEFINE IN YOUR secrets.php FILE WHICH IS NOT
 	# MEANT TO BE CHECKED IN EVER. DON'T DO IT. AND DON'T DEFINE THESE
-	# THINGS HERE. REALLY. 
+	# THINGS HERE. REALLY.
 
 	# $GLOBALS['cfg']['crypto_cookie_secret'] = '';
 	# $GLOBALS['cfg']['crypto_password_secret'] = '';
